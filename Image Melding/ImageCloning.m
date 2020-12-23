@@ -10,15 +10,27 @@ global grad_weight; % lambda value in the paper
 global max_val_B; %max brightness
 global out_directory;  %directory name for saving intermediate files
 resize_method = 'lanczos3'; % Interpolation Kernel for resizing
-out_directory = '.\Results'; %folder in which we store each iterative result
+
+input_folder = 'Inputs/Image Cloning/'
+results_folder = '.\Results\'
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%MODIFY THIS SECTION FOR YOUR TEST IMAGES
+out_directory = strcat(results_folder, 'squirrel'); %folder in which we store each iterative result
+trg_file_name = strcat(input_folder, 'Squirrel_trg.png');%name of the target file
+src_file_name = strcat(input_folder, 'Squirrel_src.png');%name of the source file
+synth_file_mask = strcat(input_folder, 'Squirrel_synth_mask.png');%name of the mask representing the part for synthesis
+src_file_mask = strcat(input_folder, 'Squirrel_src_mask.png');%name of the mask file representing the part we want to copy from the source.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+if ~exist(out_directory, 'dir')
+    mkdir(out_directory);
+end
 
 grad_weight = .75; %we fix a normal lambda value
 
 
-trg_file_name = 'Squirrel_trg.png';%name of the target file
-src_file_name = 'Squirrel_src.png';%name of the source file
-synth_file_mask = 'Squirrel_synth_mask.png';%name of the mask representing the part for synthesis
-src_file_mask = 'Squirrel_src_mask.png';%name of the mask file representing the part we want to copy from the source.
+
 
 
 [im1 im1_mask im1_src im2_src alpha_mask hole_mask src2_mask] = read_mask_ims(trg_file_name, src_file_name, src_file_mask, synth_file_mask); %reads the input image with black and white masks!

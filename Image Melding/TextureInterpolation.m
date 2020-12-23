@@ -13,12 +13,24 @@ path(path, '.\Mexfiles'); % Contains the compiled functions for the search and v
 global grad_weight;%lambda value in the paper
 global out_directory;%directory name for saving intermediate files
 
-input_file_name = 'wall_marble.png'; %image that contain two textures for which we want to perform an interpolation
-out_directory = '.\Results'; %folder in which we store each iterative result
+
+input_folder = 'Inputs/Texture interpolation/'
+results_folder = '.\Results\'
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%MODIFY THIS SECTION FOR YOUR TEST IMAGES
+input_file_name = strcat(input_folder,'wall_marble.png'); %image that contain two textures for which we want to perform an interpolation
+out_directory = strcat(results_folder,'wall_marble'); %folder in which we store each iterative result
+im1_src = im2double(imread(strcat(input_folder,'wall.jpg'))); % Image of the first texture
+im2_src = im2double(imread(strcat(input_folder,'marble.jpg'))); % Image of the second texture
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+if ~exist(out_directory, 'dir')
+    mkdir(out_directory);
+end
+ 
 grad_weight = 2.0; %we fix a great lambda value
 
- im1_src = im2double(imread('wall.jpg')); % Image of the first texture
- im2_src = im2double(imread( 'marble.jpg')); % Image of the second texture
 [im1 im1_mask invalid_mask] = read_mask_image(input_file_name,1,0.8); %reads the input image and wherever the color is magenta it assings it to be a hole!
 
 alpha_mask = generate_linear_blend(im1_mask); %generating an alpha linear blending for the mask    

@@ -13,8 +13,21 @@ path(path, '.\Mexfiles'); % Contains the compiled functions for the search and v
 
 global grad_weight;%lambda (gradient dimensions weight for calculating the energy function) value in the paper
 global out_directory;%directory name for saving intermediate files
-input_file_name = 'yard.jpg'; %image in which we perform the hole filling
-out_directory = '.\Results'; %folder in which we store each iterative result
+
+input_folder = 'Inputs/Hole Filling/'
+results_folder = '.\Results\'
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%MODIFY THIS SECTION FOR YOUR TEST IMAGES
+input_file_name = strcat(input_folder,'yard.jpg'); %image in which we perform the hole filling
+out_directory = strcat(results_folder, 'yard'); %folder in which we store each iterative result
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+if ~exist(out_directory, 'dir')
+    mkdir(out_directory);
+end
+
+
 grad_weight = 0.1; %we fix a small lambda value
 
 [im1 im1_mask invalid_mask] = read_mask_image(input_file_name,1,0.8); %reads the input image and wherever the color is magenta it assings it to be a hole!
