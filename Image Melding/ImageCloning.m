@@ -16,11 +16,11 @@ results_folder = '.\Results\'
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %MODIFY THIS SECTION FOR YOUR TEST IMAGES
-out_directory = strcat(results_folder, 'squirrel'); %folder in which we store each iterative result
-trg_file_name = strcat(input_folder, 'Squirrel_trg.png');%name of the target file
-src_file_name = strcat(input_folder, 'Squirrel_src.png');%name of the source file
-synth_file_mask = strcat(input_folder, 'Squirrel_synth_mask.png');%name of the mask representing the part for synthesis
-src_file_mask = strcat(input_folder, 'Squirrel_src_mask.png');%name of the mask file representing the part we want to copy from the source.
+out_directory = strcat(results_folder, 'lizard'); %folder in which we store each iterative result
+trg_file_name = strcat(input_folder, 'lizard_trg.jpg');%name of the target file
+src_file_name = strcat(input_folder, 'lizard_src.jpg');%name of the source file
+synth_file_mask = strcat(input_folder, 'lizard_synth_mask.jpg');%name of the mask representing the part for synthesis
+src_file_mask = strcat(input_folder, 'lizard_src_mask.jpg');%name of the mask file representing the part we want to copy from the source.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 if ~exist(out_directory, 'dir')
