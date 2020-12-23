@@ -1,75 +1,29 @@
-
-   [PlGa]: <https://github.com/RahulHP/dillinger/blob/master/plugins/googleanalytics/README.md>
-# Projet Final 
+[PlGa]: <https://github.com/RahulHP/dillinger/blob/master/plugins/googleanalytics/README.md>
+# Projet final - INF8801A
 
 ## Introduction
-Pour rappel, mon projet final porte sur l'étude de l'article "Image Melding: Combining Inconsistent Images
-using Patch-based Synthesis"
-```shell
-$ sudo ./install.sh
-```
+Pour rappel, notre projet final porte sur l'étude de l'article **Image Melding: Combining Inconsistent Images using Patch-based Synthesis**. Les différents algorithmes de cette étude se trouve dans le dossier *Image Melding*. Justement, nous comparerons l'algorithme *Image Cloning* de cette étude avec celui de la méthode de Poisson du laboratoire 2 (se trouvant dans le dossier *labo2*) que nous avons fait au cours de cette session d'automne 2020. Tout le code à été code en *Matlab*. 
 
-## Benchmarks
+## Environnement de travail
+Dans le dossier *Image Melding*, on retrouve plusieurs fichiers, mais ceux qui nous intéresseront le plus sont les fichiers *ImageCloning.m* , *HoleFilling.m* et *TextureInterpolation.m*. Ces fichiers contiennent les algorithmes respectifs étudiés. Les autres fichiers sont les différents fichiers *do_EM_...* et *do_poisson_iterations*. Les fichiers *do_EM_...* sont utilisés pour faire les itérations de synthèse de base de leur algorithme respectif. Ils appellent à leur tour la fonction *do_poisson_iterations* pour résoudre la projection de l'équation de Poisson. On effectue environ 30 itérations par synthèses pour environ 10 mises à l'échelle.
 
-We recommand you to run the run_benchmarks.sh file, by specifying the ec2 instance you are running on and the main partition of your instance.
+Nous retrouvons aussi un dossier *Mexfiles* qui contient des fonctions sous forme de script *Matlab* permettant de chercher et de voter les différents patches pouvant remplir les zones à remplir de notre image de destination. 
 
-Each tests will be ran 5 times and produce a result file.
+Finalement, toujours dans le dossier *Image Melding* , il y a un dossier *Inputs* et un dossier *Results*. Le dossier *Inputs* contient les différentes images d'entrées pour chacun des algorithmes, dans leur dossier respectif. Le dossier *Results* contiendra lui les images intermédiaires et finales correspondantes créées lors de l'exécution d'un des trois algorithmes, toujours dans leur dossier respectif. 
 
-```shell
-$ sudo ./run_benchmarks.sh $INSTANCE $PARTITION
-```
+L'autre dossier présent à la base de notre répertoire est le dossier *labo2*. Dans celui-ci, ce qui va nous intéresser, c'est le fichier **mainPoisson.m** présent dans le dossier *labo2\Inpainting\matlab*. Pour rappel, les images tests se trouvent dans le dossier *labo2\Inpainting\data\testPoisson*.
 
-Here's an example of a command you could run with a m4.large instance:
-```example
-$ sudo ./run_benchmarks.sh m4large xvda1
-``` 
+Dans les fichiers jugés les plus importants, des commentaires ont été ajoutés en espérant que cela vous aide dans votre compréhension du code. 
 
-WARNING :
-1. When running the disk test, an error/warning could appear on the command line output. Just ignore it.
-It could be something like this : HDIO_DRIVE_CMD(identify) failed: Invalid argument.
+## Algorithmes étudiés 
+La section suivante décrit brièvement chacun des trois algorithmes, ou plutôt comment bien les faires fonctionner. Des images tests et leurs résultats sont déjà fournis avec la remise du code. Vous pourriez toujours vous en inspirer et tenter de faire les tests avec vos propres images (et masques, si nécessaires). De plus, un fichier *other_results.pdf* à été ajouté dans le dossier *Results* afin que vous poussiez des résultats avec plusieurs autres images tests. 
 
-2. You could be confused by the number of times the IOPS test is run. We can ensure you that it is run 5 times, and for more details, consult the iops_test.sh file. 
+### Hole Filling
+Le premier algorithme est le *Hole Filling*, soit la complétion d'image à source unique. Pour l'exécuter, il suffit de lancer le fichier **HoleFilling.m**. Ce fichier à besoin uniquement d'une image source avec une zone magenta. 
 
-### Individual benchmark
-This section presents each benchmark, and if their corresponding file is executed, only one test will be made (except iops_test.sh). All the details of how each benchmark is performed will be described in the report. 
-### 1. IO
-We start this benchmark by executing this command : 
-```shell
-$ sudo ./io_test.sh $INSTANCE
-```
-It uses the dd linux command.
+### Image Cloning
+Le deuxième algorithme est le *Image Cloning*, soit la reproduction d'éléments d'une image source vers une image de destination. Pour l'exécuter, il suffit de lancer le fichier **ImageCloning.m**. Essentielement, cet algorithme fait ce que l'algorithme *Poisson* du laboratoire 2 fait. Simplement, pour fonctionner, il a besoin de 4 images : une image source, une image de destination, un masque de couvrant la zone de l'image source à cloner et un masque de synthèse couvrant la zone à intégrer dans l'image de destination. Les deux masques doivent être de couleurs noir et blanc.  
 
-### 2. CPU Memory Disk
-We start this benchmark by executing this command : 
-```shell
-$ sudo ./cpu_test.sh $INSTANCE
-```
-It uses the Phoronix test suite.
+### Texture Interpolation
+Le troisième algorithme est le *Texture Interpolation*, soit l'interpolation de multiples textures pour la formation d'une image unique. Pour l'exécuter, il suffit de lancer le fichier **TextureInterpolation.m**. Ce fichier à besoin de deux images par exemple de textures différentes, et d'une autre image source (possiblement un panorama) contenant à ces extrémités les deux images différentes. Entre les deux images, il devrait y avoir une zone magenta a remplir. 
 
-### 3. IOPS
-We start this benchmark by executing this command : 
-```shell
-$ sudo ./iops_test.sh $INSTANCE
-```
-It uses bonnie++ software.
-
-### 4. Memory
-We start this benchmark by executing this command : 
-```shell
-$ sudo ./memory_test.sh $INSTANCE
-```
-It uses stress-ng tool.
-
-### 5. Disk
-We start this benchmark by executing this command : 
-```shell
-$ sudo ./disk_test.sh $INSTANCE $PARTITION
-```
-It uses hdparm command line.
-
-### 6. Network Throughput
-We start this benchmark by executing this command : 
-```shell
-$ sudo ./network_throughput_test.sh $INSTANCE 
-```
-It uses Speedtest cli.
